@@ -28,7 +28,7 @@ var _stream = fs.createWriteStream('../log/biology.js', {
     encoding: 'utf-8'
 })
 
-getBiogyList(0,100);
+getBiogyList(0,1);
 
 /**
  * 爬去数据
@@ -56,7 +56,14 @@ function getBiogyList(offset,size) {
             var resultArr = res.body.result
             for(var i = 0;i < resultArr.length;i++){
                 var detailUrl = resultArr[i].url;
-                console.log(detailUrl);
+               // console.log(detailUrl);
+                request.get(detailUrl)
+                    .end(function(error, response){
+                        //console.log(response.text)
+                        var responceText = response.text;
+                        var $ = cheerio.load(responceText);
+                        console.log($('#articleTitle').text());
+                    })
             }
         })
 }
