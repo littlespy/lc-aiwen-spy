@@ -28,11 +28,8 @@ var _stream = fs.createWriteStream('../log/biology.js', {
     encoding: 'utf-8'
 })
 
-getBiogyList(0,11,function(){
-    console.log('done');
-    //getBiogyList(100,200,function(){
-    //    console.log('done');
-    //})
+getBiogyList(0,100,function(){
+        console.log('done');
 });
 
 /**
@@ -77,21 +74,22 @@ function getBiogyList(offset,size,callback) {
  * @param callback
  */
 function savePostingData(resultArr,index,length,callback){
-    console.log(index);
-    if(index < length-1){
+    //console.log(index);
+    if(index < length){
         setTimeout(function(){
-            index++;
             var url = resultArr[index].resource_url;
             getDetailData(url,function(){
+                index++;
                 savePostingData(resultArr,index,length,callback);
             })
-        },1000);
+        },500);
     }else{
         callback();
     }
 }
 
 function getDetailData(url,callback){
+    //console.log(url);
     request.get(url)
         .end(function(err, res){
             if(err){
