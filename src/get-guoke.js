@@ -65,7 +65,7 @@ function getBiogyList(offset,size) {
                         }else{
                             var resultObj = res.body.result;
                             var articalData = {};
-                            articalData.id = resultObj.id;
+                            articalData.bio_id = resultObj.id;
                             articalData.content = resultObj.content;
                             articalData.subject = resultObj.subject;
                             articalData.author = resultObj.author;
@@ -74,6 +74,7 @@ function getBiogyList(offset,size) {
                             articalData.summary = resultObj.summary;
                             articalData.title = resultObj.title;
                             articalData.updatetime = resultObj.date_modified;
+                            articalData.image_info = resultObj.image_info;
                             //console.log(JSON.stringify(articalData));
                             postArticle(articalData,function(){
 
@@ -98,31 +99,32 @@ function _log(content){
  * post article 到 avoscloud
  */
 function postArticle (data, callback){
-    var bio = new biologylist()
+    var bio = new biologylist();
 
-    if(!data.id) return
+    if(!data.bio_id) return
 
-    var bioid = data.id
+    var bioid = data.bio_id
 
     findArticleById(bioid, function(flag){
         if(flag) return;
         // 设置数据
 
-        //articalData.id = resultObj.id;
-        //articalData.content = resultObj.content;
-        //articalData.subject = resultObj.subject;
-        //articalData.author = resultObj.author;
-        //articalData.tag = 'biology';
-        //articalData.listimg = resultObj.image_info;
-        //articalData.summary = resultObj.summary;
-        //articalData.title = resultObj.title;
-        //articalData.updatetime = resultObj.date_modified;
-
-        bio.set('id', data.id)
-        bio.set('update_time', params.update_time)
-        bio.set('article_id', ar_id)
-        bio.set('tag_id', params.tag.id)
-        bio.set('tag_name', params.tag.name)
+        bio.set('bio_id', data.id);
+        bio.set('update_time', data.updatetime);
+        bio.set('content', data.content);
+        bio.set('name', data.subject.name);
+        bio.set('key', data.subject.key);
+        bio.set('authorname', data.author.nickname);
+        bio.set('authorintroduction', data.author.introduction);
+        bio.set('avatarsmall', data.author.avatar.small);
+        bio.set('avatarlarge', data.author.avatar.large);
+        bio.set('avatarnormal', data.author.avatar.normal);
+        bio.set('listimg', data.listimg.url);
+        bio.set('listimgwidth', data.listimg.width);
+        bio.set('listimgheight', data.listimg.height);
+        bio.set('tag', data.tag);
+        bio.set('summary', data.summary);
+        bio.set('title', data.title);
         bio.save().then(function (obj) {
             //对象保存成功
             console.log('保存成功')
