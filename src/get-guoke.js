@@ -55,14 +55,26 @@ function getBiogyList(offset,size) {
             }
             var resultArr = res.body.result
             for(var i = 0;i < resultArr.length;i++){
-                var detailUrl = resultArr[i].url;
-               // console.log(detailUrl);
-                request.get(detailUrl)
-                    .end(function(error, response){
-                        //console.log(response.text)
-                        var responceText = response.text;
-                        var $ = cheerio.load(responceText);
-                        console.log($('#articleTitle').text());
+                var detailUrl = resultArr[i].resource_url;
+                var articalData = {};
+                articalData.id = resultArr[i].id;
+                articalData.type = resultArr[i].subject.name;
+                articalData.key = resultArr[i].subject.key;
+                articalData.author = resultArr[i].author;
+                articalData.listimg = resultArr[i].image_info;
+                articalData.summary = resultArr[i].summary;
+                articalData.title = resultArr[i].title_hide;
+                articalData.updatetime = resultArr[i].date_modified;
+                //接着扒取详情页内容数据
+                    request.get(detailUrl)
+                    .end(function(err, res){
+                        var resultObj = res.body.result;
+                        articalData.content = resultObj.content;
+                        //console.log(JSON.stringify(articalData));
+                        //var $ = cheerio.load(responceText);
+                        //articalData.detail.title = $('#articleTitle').text();
+                        //articalData.detail.authorpic = $('.author-pic').find('img').attr('src')
+                        //console.log($('.author-pic').find('img').attr('src'));
                     })
             }
         })
