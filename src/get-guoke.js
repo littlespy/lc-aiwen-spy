@@ -28,14 +28,19 @@ var _stream = fs.createWriteStream('../log/biology.js', {
     encoding: 'utf-8'
 })
 
-getBiogyList(0,1);
+getBiogyList(0,11,function(){
+    console.log('done');
+    //getBiogyList(100,200,function(){
+    //    console.log('done');
+    //})
+});
 
 /**
  * 爬去数据
  * @param offset
  * @param size
  */
-function getBiogyList(offset,size) {
+function getBiogyList(offset,size,callback) {
     var tag = config.tagList[0]
     var tid = tag.id;
     var tname = tag.name
@@ -54,33 +59,62 @@ function getBiogyList(offset,size) {
                 _log(err);
             }
             var resultArr = res.body.result
-            for(var i = 0;i < resultArr.length;i++){
-                var detailUrl = resultArr[i].resource_url;
+            savePostingData(resultArr,0,resultArr.length,callback)
+            //for(var i = 0;i < resultArr.length;i++){
+            //    var detailUrl = resultArr[i].resource_url;
+            //    savePostingData(detailUrl,function(){
+            //        callback();
+            //    });
+            //
+            //
+            //}
+        });
+}
 
-                //接着扒取详情页内容数据
-                    request.get(detailUrl)
-                    .end(function(err, res){
-                        if(err){
-                            _log(err);
-                        }else{
-                            var resultObj = res.body.result;
-                            var articalData = {};
-                            articalData.bio_id = resultObj.id;
-                            articalData.content = resultObj.content;
-                            articalData.subject = resultObj.subject;
-                            articalData.author = resultObj.author;
-                            articalData.tag = 'biology';
-                            articalData.listimg = resultObj.image_info;
-                            articalData.summary = resultObj.summary;
-                            articalData.title = resultObj.title;
-                            articalData.updatetime = resultObj.date_modified;
-                            articalData.image_info = resultObj.image_info;
-                            //console.log(JSON.stringify(articalData));
-                            postArticle(articalData,function(){
+/**
+ * 持久化推送数据
+ * @param url
+ * @param callback
+ */
+function savePostingData(resultArr,index,length,callback){
+    console.log(index);
+    if(index < length-1){
+        setTimeout(function(){
+            index++;
+            var url = resultArr[index].resource_url;
+            getDetailData(url,function(){
+                savePostingData(resultArr,index,length,callback);
+            })
+        },1000);
+    }else{
+        callback();
+    }
+}
 
-                            })
-                        }
-                    });
+function getDetailData(url,callback){
+    request.get(url)
+        .end(function(err, res){
+            if(err){
+                console.log('err');
+                _log(err);
+            }else{
+                var resultObj = res.body.result;
+                var articalData = {};
+                if(!resultObj || !resultObj.id){
+                    return;
+                }
+                articalData.id = resultObj.id;
+                articalData.content = resultObj.content;
+                articalData.subject = resultObj.subject;
+                articalData.author = resultObj.author;
+                articalData.tag = 'biology';
+                articalData.listimg = resultObj.image_info;
+                articalData.summary = resultObj.summary;
+                articalData.title = resultObj.title;
+                articalData.updatetime = resultObj.date_modified;
+                articalData.image_info = resultObj.image_info;
+                postArticle(articalData);
+                callback();
             }
         });
 }
@@ -101,9 +135,9 @@ function _log(content){
 function postArticle (data, callback){
     var bio = new biologylist();
 
-    if(!data.bio_id) return
+    if(!data.id) return
 
-    var bioid = data.bio_id
+    var bioid = data.id
 
     findArticleById(bioid, function(flag){
         if(flag) return;
@@ -149,7 +183,7 @@ function postArticle (data, callback){
 function findArticleById(id, callback){
     var queryAt = new AV.Query('biologylist')
 
-    queryAt.equalTo("id", id)
+    queryAt.equalTo("bio_id", id)
 
     queryAt.find({
         success: function(results) {
