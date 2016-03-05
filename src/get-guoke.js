@@ -56,28 +56,38 @@ function getBiogyList(offset,size) {
             var resultArr = res.body.result
             for(var i = 0;i < resultArr.length;i++){
                 var detailUrl = resultArr[i].resource_url;
-                var articalData = {};
-                articalData.id = resultArr[i].id;
-                articalData.type = resultArr[i].subject.name;
-                articalData.key = resultArr[i].subject.key;
-                articalData.author = resultArr[i].author;
-                articalData.listimg = resultArr[i].image_info;
-                articalData.summary = resultArr[i].summary;
-                articalData.title = resultArr[i].title_hide;
-                articalData.updatetime = resultArr[i].date_modified;
+
+                //articalData.id = resultArr[i].id;
+                //articalData.type = resultArr[i].subject.name;
+                //articalData.key = resultArr[i].subject.key;
+                //articalData.author = resultArr[i].author;
+                //articalData.listimg = resultArr[i].image_info;
+                //articalData.summary = resultArr[i].summary;
+                //articalData.title = resultArr[i].title_hide;
+                //articalData.updatetime = resultArr[i].date_modified;
                 //接着扒取详情页内容数据
                     request.get(detailUrl)
                     .end(function(err, res){
-                        var resultObj = res.body.result;
-                        articalData.content = resultObj.content;
-                        //console.log(JSON.stringify(articalData));
-                        //var $ = cheerio.load(responceText);
-                        //articalData.detail.title = $('#articleTitle').text();
-                        //articalData.detail.authorpic = $('.author-pic').find('img').attr('src')
-                        //console.log($('.author-pic').find('img').attr('src'));
-                    })
+                        if(err){
+                            _log(err);
+                        }else{
+                            var resultObj = res.body.result;
+                            var articalData = {};
+                            articalData.code='200';
+                            articalData.data = {};
+                            articalData.id = resultObj.id;
+                            articalData.data.content = resultObj.content;
+                            articalData.subject = resultObj.subject;
+                            articalData.author = resultObj.author;
+                            articalData.listimg = resultObj.image_info;
+                            articalData.summary = resultObj.summary;
+                            articalData.title = resultObj.title;
+                            articalData.updatetime = resultObj.date_modified;
+                            console.log(JSON.stringify(articalData));
+                        }
+                    });
             }
-        })
+        });
 }
 
 
