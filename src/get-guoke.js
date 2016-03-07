@@ -28,7 +28,7 @@ var _stream = fs.createWriteStream('../log/biology.js', {
     encoding: 'utf-8'
 })
 
-getBiogyList(0,100,function(){
+getBiogyList(0,200,function(){
         console.log('done');
 });
 
