@@ -22,14 +22,14 @@ var config = {
     }]
 };
 
-var biologylist = AV.Object.extend('biologylist');  //生物文章列表对象
+var biologylist = AV.Object.extend('biologylist'); //生物文章列表对象
 var _stream = fs.createWriteStream('../log/biology.js', {
     flags: 'a',
     encoding: 'utf-8'
 })
 
-getBiogyList(0,200,function(){
-        console.log('done');
+getBiogyList(0, 200, function() {
+    console.log('done');
 });
 
 /**
@@ -37,34 +37,34 @@ getBiogyList(0,200,function(){
  * @param offset
  * @param size
  */
-function getBiogyList(offset,size,callback) {
+function getBiogyList(offset, size, callback) {
     var tag = config.tagList[0]
     var tid = tag.id;
     var tname = tag.name
     var params = {
-        retrieve_type:'by_subject',
-        subject_key:tid,
-        limit:size,
-        offset:offset,
-        _:new Date().getTime()
-    }
-   // getPageDelay()
+            retrieve_type: 'by_subject',
+            subject_key: tid,
+            limit: size,
+            offset: offset,
+            _: new Date().getTime()
+        }
+        // getPageDelay()
     request.get(base)
         .query(params)
-        .end(function(err, res){
-            if(err){
+        .end(function(err, res) {
+            if (err) {
                 _log(err);
             }
             var resultArr = res.body.result
-            savePostingData(resultArr,0,resultArr.length,callback)
-            //for(var i = 0;i < resultArr.length;i++){
-            //    var detailUrl = resultArr[i].resource_url;
-            //    savePostingData(detailUrl,function(){
-            //        callback();
-            //    });
-            //
-            //
-            //}
+            savePostingData(resultArr, 0, resultArr.length, callback)
+                //for(var i = 0;i < resultArr.length;i++){
+                //    var detailUrl = resultArr[i].resource_url;
+                //    savePostingData(detailUrl,function(){
+                //        callback();
+                //    });
+                //
+                //
+                //}
         });
 }
 
@@ -73,32 +73,32 @@ function getBiogyList(offset,size,callback) {
  * @param url
  * @param callback
  */
-function savePostingData(resultArr,index,length,callback){
+function savePostingData(resultArr, index, length, callback) {
     //console.log(index);
-    if(index < length){
-        setTimeout(function(){
+    if (index < length) {
+        setTimeout(function() {
             var url = resultArr[index].resource_url;
-            getDetailData(url,function(){
+            getDetailData(url, function() {
                 index++;
-                savePostingData(resultArr,index,length,callback);
+                savePostingData(resultArr, index, length, callback);
             })
-        },500);
-    }else{
+        }, 500);
+    } else {
         callback();
     }
 }
 
-function getDetailData(url,callback){
+function getDetailData(url, callback) {
     //console.log(url);
     request.get(url)
-        .end(function(err, res){
-            if(err){
+        .end(function(err, res) {
+            if (err) {
                 console.log('err');
                 _log(err);
-            }else{
+            } else {
                 var resultObj = res.body.result;
                 var articalData = {};
-                if(!resultObj || !resultObj.id){
+                if (!resultObj || !resultObj.id) {
                     return;
                 }
                 articalData.id = resultObj.id;
@@ -122,7 +122,7 @@ function getDetailData(url,callback){
  * @param content  日志内容
  * @private
  */
-function _log(content){
+function _log(content) {
     _stream.write(content)
 }
 
@@ -130,15 +130,15 @@ function _log(content){
 /**
  * post article 到 avoscloud
  */
-function postArticle (data, callback){
+function postArticle(data, callback) {
     var bio = new biologylist();
 
-    if(!data.id) return
+    if (!data.id) return
 
     var bioid = data.id
 
-    findArticleById(bioid, function(flag){
-        if(flag) return;
+    findArticleById(bioid, function(flag) {
+        if (flag) return;
         // 设置数据
 
         bio.set('bio_id', data.id);
@@ -157,14 +157,14 @@ function postArticle (data, callback){
         bio.set('tag', data.tag);
         bio.set('summary', data.summary);
         bio.set('title', data.title);
-        bio.save().then(function (obj) {
+        bio.save().then(function(obj) {
             //对象保存成功
             console.log('保存成功')
-            // console.log(obj)
-        }, function (error) {
+                // console.log(obj)
+        }, function(error) {
             //对象保存失败，处理 error
             _log(error)
-        }).always(function(){
+        }).always(function() {
             //无论成功还是失败，都调用到这里
             callback && callback('done')
         })
@@ -178,17 +178,17 @@ function postArticle (data, callback){
  * @param id
  * @param callback
  */
-function findArticleById(id, callback){
+function findArticleById(id, callback) {
     var queryAt = new AV.Query('biologylist')
 
     queryAt.equalTo("bio_id", id)
 
     queryAt.find({
         success: function(results) {
-            if(results.length > 0){
+            if (results.length > 0) {
                 console.log('存在', id, results.length)
                 callback && callback(true)
-            }else{
+            } else {
                 callback && callback(false)
             }
         },
