@@ -23,7 +23,7 @@ var config = {
 };
 
 var biologylist = AV.Object.extend('biologylist'); //生物文章列表对象
-var _stream = fs.createWriteStream('../log/biology.js', {
+var _stream = fs.createWriteStream('./log/biology.js', {
     flags: 'a',
     encoding: 'utf-8'
 })
