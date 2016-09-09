@@ -25,5 +25,5 @@
     "superagent": "~0.15.7",
     "underscore": "~1.6.0"
   },
-  "license": "ISC"
+  "license": "MIT"
 }

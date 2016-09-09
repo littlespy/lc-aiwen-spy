@@ -27,9 +27,10 @@ app.get('/', function(req, res) {
 
 app.get('/api/getbiolist', function(req, res) {
 	var query = new AV.Query('biologylist'); //生物列表数据
+	console.log(query);
 	var response = {};
-	query = query.addDescending('bio_id');
-	query = query.limit(200);
+	query.addDescending('bio_id');
+	query.limit(200);
 	query.find({
 		success: function(results) { //查询数据回调成功
 			// results is an array of AV.Object.
