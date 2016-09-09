@@ -26,29 +26,36 @@ app.get('/', function(req, res) {
 });
 
 app.get('/api/getbiolist', function(req, res) {
-	var query = new AV.Query('biologylist'); //生物列表数据
-	console.log(query);
-	var response = {};
-	query.addDescending('bio_id');
-	query.limit(200);
-	query.find({
-		success: function(results) { //查询数据回调成功
-			// results is an array of AV.Object.
-			response.code = '200';
-			response.data = {};
-			response.data.results = results;
-			console.log(results.length);
-			response.msg = 'success';
-			res.send(response);
-		},
+	if (req.query && req.query.start && req.query.end){
+		var query = new AV.Query('biologylist'); //生物列表数据
+		var response = {};
+		query.addDescending('bio_id');
+		query.skip(req.query.start);
+		query.limit(req.query.end);
+		query.find({
+			success: function(results) { //查询数据回调成功
+				// results is an array of AV.Object.
+				response.code = '200';
+				response.data = {};
+				response.data.results = results;
+				console.log(results.length);
+				response.msg = 'success';
+				res.send(response);
+			},
 
-		error: function(error) { //查询数据回调失败
-			response.code = '100';
-			response.msg = 'query error';
-			res.send(response);
-		}
-	});
-
+			error: function(error) { //查询数据回调失败
+				response.code = '100';
+				response.msg = 'query error';
+				res.send(response);
+			}
+		});
+	}else{
+		res.send({
+			"code": "10000",
+			"msg": "参数异常",
+			"data": {}
+		});
+	}
 });
 
 if (require.main === module) {
