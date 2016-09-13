@@ -10,7 +10,7 @@ const postBiology = function (data, AV, callback) {
     let bio = new biologylist();
     if (!data.id) return
     let bioid = data.id;
-    findArticleById('bio', bioid, AV,function (flag) {
+    findArticleById('biology', bioid, AV,function (flag) {
          if (flag) return;
          // 设置数据
          bio.set('bio_id', data.id);
@@ -31,8 +31,7 @@ const postBiology = function (data, AV, callback) {
          bio.set('title', data.title);
          bio.save().then(function (obj) {
              //对象保存成功
-             console.log('保存成功')
-             // console.log(obj)
+             console.log('生物数据保存成功')
          }, function (error) {
              //对象保存失败，处理 error
              _log(error)

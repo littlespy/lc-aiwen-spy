@@ -2,6 +2,7 @@
 
 const config = require('../../config.js');
 const biologylist = require('./biologylist.js');
+const internetlist = require('./internetlist.js');
 const _log = require('../../util.js')._log;
 const request = require('superagent');
 
@@ -11,7 +12,7 @@ const savingList = function (tag, resultArr, index, length, AV, callback) {
             let url = resultArr[index].resource_url;
             getDetailData(tag, url, AV, function () {
                 index++;
-                savingList(tag,resultArr, index, length, AV, callback);
+                savingList(tag, resultArr, index, length, AV, callback);
             })
         }, 500);
     } else {
@@ -41,7 +42,7 @@ function getDetailData(tag, url, AV, callback) {
                 articalData.title = resultObj.title;
                 articalData.updatetime = resultObj.date_modified;
                 articalData.image_info = resultObj.image_info;
-                postArticle(tag, articalData, AV,function(){
+                postArticle(tag, articalData, AV, function () {
 
                 });
                 callback();
@@ -53,8 +54,13 @@ function getDetailData(tag, url, AV, callback) {
  * post article 到 avoscloud
  */
 function postArticle(tag, data, AV, callback) {
-    if (tag === 'bio') {
+    if (tag === 'biology') {
         biologylist.postBiology(data, AV, function () {
+            callback();
+        })
+    }
+    if (tag === 'internet') {
+        internetlist.postInternet(data, AV, function () {
             callback();
         })
     }

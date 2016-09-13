@@ -18,12 +18,12 @@ const dao = require('./dao.js');
 AV.initialize(config.APP_ID, config.APP_KEY, config.MASTER_KEY);
 
 /**
- * 爬去数据
+ * 爬去生物数据
  * @param offset
  * @param size
  */
 const getBiogyList = function (offset, size, callback) {
-    let tid = config.tagList.bio.id
+    let tid = config.tagList.biology.id
     let params = {
         retrieve_type: 'by_subject',
         subject_key: tid,
@@ -38,10 +38,39 @@ const getBiogyList = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('bio', resultArr, 0, resultArr.length, AV,callback)
+            dao.savingList('biology', resultArr, 0, resultArr.length, AV,callback)
         });
 }
 
+/**
+ * 爬取互联网数据
+ * @param offset
+ * @param size
+ * @param callback
+ */
+const getInternet = function (offset, size, callback) {
+    let tid = config.tagList.internet.id
+    let params = {
+        retrieve_type: 'by_subject',
+        subject_key: tid,
+        limit: size,
+        offset: offset,
+        _: new Date().getTime()
+    }
+    request.get(base)
+        .query(params)
+        .end(function (err, res) {
+            if (err) {
+                _log(err);
+            }
+            const resultArr = res.body.result;
+            dao.savingList('internet', resultArr, 0, resultArr.length, AV,callback)
+        });
+}
+
+
+
 module.exports = {
-    getBiogyList: getBiogyList
+    getBiogyList: getBiogyList,
+    getInternet:getInternet
 }
