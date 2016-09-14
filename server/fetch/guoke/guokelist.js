@@ -38,7 +38,7 @@ const getBiogyList = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('biology', resultArr, 0, resultArr.length, AV,callback)
+            dao.savingList('biology', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
@@ -64,13 +64,33 @@ const getInternet = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('internet', resultArr, 0, resultArr.length, AV,callback)
+            dao.savingList('internet', resultArr, 0, resultArr.length, AV, callback)
+        });
+}
+
+const getMath = function (offset, size, callback) {
+    let tid = config.tagList.internet.id
+    let params = {
+        retrieve_type: 'by_subject',
+        subject_key: tid,
+        limit: size,
+        offset: offset,
+        _: new Date().getTime()
+    }
+    request.get(base)
+        .query(params)
+        .end(function (err, res) {
+            if (err) {
+                _log(err);
+            }
+            const resultArr = res.body.result;
+            dao.savingList('math', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
 
-
 module.exports = {
     getBiogyList: getBiogyList,
-    getInternet:getInternet
+    getInternet: getInternet,
+    getMath: getMath
 }

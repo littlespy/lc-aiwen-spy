@@ -5,15 +5,20 @@ module.exports = {
     'APP_KEY': 'zqvbYFohfN7IP0DJ0JRYODuI',
     'MASTER_KEY': 'uBrt8ex9Vutl9fcmQgOPeYzJ',
     'tagList': {
-        'biology':{
+        'biology': {
             "id": "biology",
             "name": "生物",
-            "object":"biologylist"
+            "object": "biologylist"
         },
-        'internet':{
-            "id":"internet",
+        'internet': {
+            "id": "internet",
             "name": "互联网",
-            "object":"internetlist"
+            "object": "internetlist"
+        },
+        'math': {
+            "id": "math",
+            "name": "数学",
+            "object": "mathlist"
         }
     }
     ,

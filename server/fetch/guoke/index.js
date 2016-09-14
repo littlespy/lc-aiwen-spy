@@ -9,3 +9,8 @@ guoke.getBiogyList(0, 100, function () {
 guoke.getInternet(0, 100, function () {
     console.log('done');
 });
+
+
+guoke.getMath(0, 100, function () {
+    console.log('done');
+});

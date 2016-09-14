@@ -3,6 +3,7 @@
 const config = require('../../config.js');
 const biologylist = require('./biologylist.js');
 const internetlist = require('./internetlist.js');
+const mathlist = require('./mathlist.js');
 const _log = require('../../util.js')._log;
 const request = require('superagent');
 
@@ -61,6 +62,11 @@ function postArticle(tag, data, AV, callback) {
     }
     if (tag === 'internet') {
         internetlist.postInternet(data, AV, function () {
+            callback();
+        })
+    }
+    if (tag === 'math') {
+        mathlist.postMath(data, AV, function () {
             callback();
         })
     }
