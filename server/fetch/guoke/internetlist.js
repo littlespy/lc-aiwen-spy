@@ -13,7 +13,7 @@ const postInternet = function (data, AV, callback) {
     findArticleById('internet', interid, AV,function (flag) {
          if (flag) return;
          // 设置数据
-        inter.set('internet_id', data.id);
+        inter.set('data_id', data.id);
         inter.set('update_time', data.updatetime);
         inter.set('content', data.content);
         inter.set('name', data.subject.name);

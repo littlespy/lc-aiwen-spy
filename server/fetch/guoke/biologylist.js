@@ -13,7 +13,7 @@ const postBiology = function (data, AV, callback) {
     findArticleById('biology', bioid, AV,function (flag) {
          if (flag) return;
          // 设置数据
-         bio.set('bio_id', data.id);
+         bio.set('data_id', data.id);
          bio.set('update_time', data.updatetime);
          bio.set('content', data.content);
          bio.set('name', data.subject.name);

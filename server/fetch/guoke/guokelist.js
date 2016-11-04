@@ -88,9 +88,31 @@ const getMath = function (offset, size, callback) {
         });
 }
 
+const getInterview = function(offset, size, callback){
+    let tid = config.tagList.interview.id
+    let params = {
+        retrieve_type: 'by_channel',
+        channel_key: tid,
+        limit: size,
+        offset: offset,
+        _: new Date().getTime()
+    }
+    request.get(base)
+        .query(params)
+        .end(function (err, res) {
+            if (err) {
+                _log(err);
+            }
+            const resultArr = res.body.result;
+            dao.savingList('interview', resultArr, 0, resultArr.length, AV, callback)
+        });
+}
+
 
 module.exports = {
     getBiogyList: getBiogyList,
     getInternet: getInternet,
-    getMath: getMath
+    getMath: getMath,
+    getInterview:getInterview
+
 }

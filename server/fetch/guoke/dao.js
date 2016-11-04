@@ -4,6 +4,7 @@ const config = require('../../config.js');
 const biologylist = require('./biologylist.js');
 const internetlist = require('./internetlist.js');
 const mathlist = require('./mathlist.js');
+const interviewlist = require('./interviewlist.js');
 const _log = require('../../util.js')._log;
 const request = require('superagent');
 
@@ -22,6 +23,7 @@ const savingList = function (tag, resultArr, index, length, AV, callback) {
 }
 
 function getDetailData(tag, url, AV, callback) {
+    //console.log(tag);
     request.get(url)
         .end(function (err, res) {
             if (err) {
@@ -67,6 +69,11 @@ function postArticle(tag, data, AV, callback) {
     }
     if (tag === 'math') {
         mathlist.postMath(data, AV, function () {
+            callback();
+        })
+    }
+    if (tag === 'interview') {
+        interviewlist.postInterview(data, AV, function () {
             callback();
         })
     }

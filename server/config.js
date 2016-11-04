@@ -19,6 +19,11 @@ module.exports = {
             "id": "math",
             "name": "数学",
             "object": "mathlist"
+        },
+        'interview':{
+            "id": "interview",
+            "name": "专访",
+            "object": "interviewlist"
         }
     }
     ,

@@ -13,7 +13,7 @@ const postMath = function (data, AV, callback) {
     findArticleById('math', mathid, AV,function (flag) {
         if (flag) return;
         // 设置数据
-        math.set('math_id', data.id);
+        math.set('data_id', data.id);
         math.set('update_time', data.updatetime);
         math.set('content', data.content);
         math.set('name', data.subject.name);
