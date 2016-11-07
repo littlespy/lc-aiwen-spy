@@ -38,7 +38,7 @@ const getBiogyList = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('biology', resultArr, 0, resultArr.length, AV, callback)
+            dao.savingList('biology', 'biologylist', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
@@ -64,7 +64,7 @@ const getInternet = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('internet', resultArr, 0, resultArr.length, AV, callback)
+            dao.savingList('internet', 'internetlist', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
@@ -84,11 +84,11 @@ const getMath = function (offset, size, callback) {
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('math', resultArr, 0, resultArr.length, AV, callback)
+            dao.savingList('math', 'mathlist', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
-const getInterview = function(offset, size, callback){
+const getInterview = function (offset, size, callback) {
     let tid = config.tagList.interview.id
     let params = {
         retrieve_type: 'by_channel',
@@ -104,7 +104,7 @@ const getInterview = function(offset, size, callback){
                 _log(err);
             }
             const resultArr = res.body.result;
-            dao.savingList('interview', resultArr, 0, resultArr.length, AV, callback)
+            dao.savingList('interview', 'interviewlist', resultArr, 0, resultArr.length, AV, callback)
         });
 }
 
@@ -113,6 +113,6 @@ module.exports = {
     getBiogyList: getBiogyList,
     getInternet: getInternet,
     getMath: getMath,
-    getInterview:getInterview
+    getInterview: getInterview
 
 }
