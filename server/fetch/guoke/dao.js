@@ -1,10 +1,6 @@
 'use strict'
 
 const config = require('../../config.js');
-const biologylist = require('./biologylist.js');
-const internetlist = require('./internetlist.js');
-const mathlist = require('./mathlist.js');
-const interviewlist = require('./interviewlist.js');
 const _log = require('../../util.js')._log;
 const request = require('superagent');
 
@@ -57,26 +53,6 @@ function getDetailData(tag, taglist,url, AV, callback) {
  */
 function postArticle(tag, taglist,data, AV, callback) {
     postAction(tag,taglist,data, AV, callback)
-    // if (tag === 'biology') {
-    //     biologylist.postBiology(data, AV, function () {
-    //         callback();
-    //     })
-    // }
-    // if (tag === 'internet') {
-    //     internetlist.postInternet(data, AV, function () {
-    //         callback();
-    //     })
-    // }
-    // if (tag === 'math') {
-    //     mathlist.postMath(data, AV, function () {
-    //         callback();
-    //     })
-    // }
-    // if (tag === 'interview') {
-    //     interviewlist.postInterview(data, AV, function () {
-    //         callback();
-    //     })
-    // }
 }
 
 function postAction(tag,taglist,data, AV, callback){
@@ -123,7 +99,7 @@ function postAction(tag,taglist,data, AV, callback){
  */
 function findArticleById(tag, id, AV, callback) {
     let queryAt = new AV.Query(config.tagList[tag].object)
-    queryAt.equalTo(tag + "_id", id)
+    queryAt.equalTo("data_id", id)
     queryAt.find({
         success: function (results) {
             if (results.length > 0) {

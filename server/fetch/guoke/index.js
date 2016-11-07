@@ -1,20 +1,18 @@
 'use strict'
 const guoke = require('./guokelist.js');
+const start = 11;
+const end = 50;
 
-guoke.getBiogyList(0, 10, function () {
-    console.log('done');
+guoke.getBiogyList(start, end, function () {
+    guoke.getInternet(start, end, function () {
+        guoke.getMath(start, end, function () {
+            guoke.getInterview(start, end, function () {
+            })
+        });
+    });
 });
 
 
-guoke.getInternet(0, 10, function () {
-    console.log('done');
-});
 
 
-guoke.getMath(0, 10, function () {
-    console.log('done');
-});
 
-guoke.getInterview(0,10,function(){
-    console.log('done!!!');
-})
