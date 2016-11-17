@@ -60,7 +60,8 @@ function postAction(tag,taglist,data, AV, callback){
     let obj = new listobj();
     if (!data.id) return
     let objid = data.id;
-    findArticleById(tag, objid, AV,function (flag) {
+    let objtitle = data.title
+    findArticleByTitle(tag, objtitle, AV,function (flag) {
         if (flag) return;
         // 设置数据
         obj.set('data_id', data.id);
@@ -104,6 +105,29 @@ function findArticleById(tag, id, AV, callback) {
         success: function (results) {
             if (results.length > 0) {
                 console.log('存在', id, results.length)
+                callback && callback(true)
+            } else {
+                callback && callback(false)
+            }
+        },
+        error: function (error) {
+            callback && callback(false)
+        }
+    })
+}
+
+/**
+ * 根据title查询文章
+ * @param id
+ * @param callback
+ */
+function findArticleByTitle(tag, title, AV, callback) {
+    let queryAt = new AV.Query(config.tagList[tag].object)
+    queryAt.equalTo("title", title)
+    queryAt.find({
+        success: function (results) {
+            if (results.length > 0) {
+                console.log('存在', title, results.length)
                 callback && callback(true)
             } else {
                 callback && callback(false)
