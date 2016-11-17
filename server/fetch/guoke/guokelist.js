@@ -69,7 +69,7 @@ const getInternet = function (offset, size, callback) {
 }
 
 const getMath = function (offset, size, callback) {
-    let tid = config.tagList.internet.id
+    let tid = config.tagList.math.id
     let params = {
         retrieve_type: 'by_subject',
         subject_key: tid,
